@@ -69,8 +69,8 @@ app.get("/ping", (_, res) => {
   res.send("ok");
 });
 
-export const services = getServices(20);
-const totalMessages = 5;
+export const services = getServices(10);
+const totalMessages = 3;
 export const messages = getMessageWithoutContentList(
   totalMessages,
   services,
@@ -107,6 +107,11 @@ export const staticContentRootPath = "/static_contents";
 /** wallet content */
 app.get("/wallet/v1/users/actions/start-session", (_, res) => {
   res.json(sessionToken);
+});
+
+app.get("/reset", (_, res) => {
+  currentProfile = getProfile(fiscalCode).payload;
+  res.send("ok");
 });
 
 app.get("/wallet/v1/wallet", (_, res) => {
@@ -219,7 +224,6 @@ responseHandler
       return { payload: userChoices[choice] };
     }
     const data: UserDataProcessing = {
-      fiscal_code: fiscalCode as FiscalCode,
       choice,
       status: UserDataProcessingStatusEnum.PENDING,
       version: 1

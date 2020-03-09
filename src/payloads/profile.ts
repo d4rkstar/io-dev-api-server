@@ -7,8 +7,7 @@ import { IOResponse } from "./response";
 // define here the fiscalCode used within the client communication
 
 const mockProfile: InitializedProfile = {
-  accepted_tos_version: undefined,
-  email: "mario.rossi@fake-email.it" as EmailAddress,
+  accepted_tos_version: 1,
   family_name: "Rossi",
   has_profile: true,
   is_inbox_enabled: true,
@@ -16,9 +15,7 @@ const mockProfile: InitializedProfile = {
   is_email_validated: false,
   is_webhook_enabled: true,
   name: "Mario",
-  spid_email: "mario.rossi@fake-spide-mail.it" as EmailAddress,
-  spid_mobile_phone: "555555555" as NonEmptyString,
-  version: 0,
+  version: 1,
   fiscal_code: "" as FiscalCode // injected in getProfile
 };
 
