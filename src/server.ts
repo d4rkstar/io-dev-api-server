@@ -211,7 +211,6 @@ responseHandler
   })
   .addCustomHandler("get", "/user-data-processing/:choice", req => {
     const choice = req.params.choice as UserDataProcessingChoiceEnum;
-    console.log(JSON.stringify(userChoices));
     if (userChoices[choice] === undefined) {
       return getProblemJson(404);
     }
