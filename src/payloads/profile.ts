@@ -16,6 +16,7 @@ const mockProfile: InitializedProfile = {
   is_webhook_enabled: true,
   name: "Mario",
   version: 1,
+  spid_mobile_phone: "55555555" as NonEmptyString,
   fiscal_code: "" as FiscalCode // injected in getProfile
 };
 
