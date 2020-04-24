@@ -170,6 +170,17 @@ app.get("/reset", (_, res) => {
   res.send("ok - reset");
 });
 
+/**
+ * TEMP section Medical Prescriptions
+ */
+app.get(`/backend.yaml`, (_, res) => {
+  sendFile("assets/yaml/backend_04242020.yaml", res);
+});
+
+app.get(`/definitions.yaml`, (_, res) => {
+  sendFile("assets/yaml/definitions_04242020.yaml", res);
+});
+
 /** IO backend API handlers */
 responseHandler
   .addHandler("get", "/session", session)
