@@ -88,11 +88,32 @@ MessageContent:
       $ref: "#/MessageBodyMarkdown"
     payment_data:
       $ref: "#/PaymentData"
+    prescription_data:
+      $ref: "#/PrescriptionData"
+    attachments:
+      type: array
+      items:
+        $ref: "#/MessageAttachment"
     due_date:
       $ref: "#/Timestamp"
   required:
     - subject
     - markdown
+MessageAttachment:
+  type: object
+  title: MessageAttachment
+  description: Describes a message's attachment
+  properties:
+    name:
+      type: string
+    base64_content:
+      type: string
+    mime_type:
+      type: string
+  required:
+    - name
+    - base64_content
+    - mime_type
 NewMessage:
   type: object
   properties:
@@ -106,6 +127,29 @@ NewMessage:
       $ref: "#/FiscalCode"
   required:
     - content
+PrescriptionData:
+  type: object
+  description: |-
+    Metadata needed to process medical prescriptions.
+  properties:
+    nre:
+      $ref: "#/PrescriptionNRE"
+    iup:
+      $ref: "#/PrescriptionIUP"
+    prescriber_fiscal_code:
+      $ref: "#/PrescriberFiscalCode"
+  required:
+    - nre
+PrescriptionIUP:
+  description: The field *Identificativo Unico di Prescrizione* identifies the medical prescription at regional level.
+  type: string
+  minLength: 1
+  maxLength: 16
+PrescriptionNRE:
+  description: The field *Numero ricetta elettronica* identifies the medical prescription at national level.
+  type: string
+  minLength: 15
+  maxLength: 15
 PaymentData:
   type: object
   description: |-
@@ -172,21 +216,6 @@ MessageStatus:
   required:
     - status
     - updated_at
-MedicalPresciption:
-  type: object
-  properties:
-    nre:
-      type: string
-    iup:
-      type: string
-    prescriber_fiscal_code:
-      $ref: "#/FiscalCode"
-    image_format:
-      type: string
-    image_data:
-      type: string
-  required:
-    - nre
 CreatedMessageWithContent:
   type: object
   properties:
@@ -202,8 +231,6 @@ CreatedMessageWithContent:
       $ref: "#/MessageContent"
     sender_service_id:
       type: string
-    medical_prescription:
-      $ref: "#/MedicalPresciption"
   required:
     - id
     - fiscal_code
@@ -263,6 +290,12 @@ FiscalCode:
   format: FiscalCode
   x-import: italia-ts-commons/lib/strings
   example: SPNDNL80R13C555X
+PrescriberFiscalCode:
+  type: string
+  description: Fiscal code of the Doctor that made the prescription.
+  format: FiscalCode
+  x-import: italia-ts-commons/lib/strings
+  example: TCNZRO80R13C555Y
 SandboxFiscalCode:
   type: string
   description: |-

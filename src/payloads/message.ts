@@ -1,21 +1,24 @@
 import { range } from "fp-ts/lib/Array";
 import * as t from "io-ts";
 import { CreatedMessageWithoutContent } from "../../generated/definitions/backend/CreatedMessageWithoutContent";
+import { FiscalCode } from "../../generated/definitions/backend/FiscalCode";
+import { MessageBodyMarkdown } from "../../generated/definitions/backend/MessageBodyMarkdown";
+import { MessageSubject } from "../../generated/definitions/backend/MessageSubject";
 import { PaginatedCreatedMessageWithoutContentCollection } from "../../generated/definitions/backend/PaginatedCreatedMessageWithoutContentCollection";
+import { PaymentData } from "../../generated/definitions/backend/PaymentData";
 import { PaymentNoticeNumber } from "../../generated/definitions/backend/PaymentNoticeNumber";
 import { ServicePublic } from "../../generated/definitions/backend/ServicePublic";
+import { Timestamp } from "../../generated/definitions/backend/Timestamp";
+import { TimeToLiveSeconds } from "../../generated/definitions/backend/TimeToLiveSeconds";
 import { getRandomIntInRange, getRandomStringId } from "../../src/utils/id";
 import { validatePayload } from "../../src/utils/validator";
+import { base64Image, base64Image2 } from "./imagebase64";
+import {
+  MessageAttachment,
+  MessageContent,
+  MessageContentPrescription_data
+} from "./newMessage";
 import { IOResponse } from "./response";
-import { FiscalCode } from "../../generated/definitions/backend/FiscalCode";
-import { Timestamp } from "../../generated/definitions/backend/Timestamp";
-import { MessageContent } from "../../generated/definitions/backend/MessageContent";
-import { TimeToLiveSeconds } from "../../generated/definitions/backend/TimeToLiveSeconds";
-import { NonEmptyString } from "italia-ts-commons/lib/strings";
-import { MessageSubject } from "../../generated/definitions/backend/MessageSubject";
-import { MessageBodyMarkdown } from "../../generated/definitions/backend/MessageBodyMarkdown";
-import { PaymentData } from "../../generated/definitions/backend/PaymentData";
-import { base64Image } from "./imagebase64";
 
 /**
  * generate a list containg count messages with the given fiscal_code
@@ -48,6 +51,33 @@ const createMessage = (
   });
 };
 
+// required attributes
+const CreatedMessageWithContentR = t.interface({
+  id: t.string,
+
+  fiscal_code: FiscalCode,
+
+  created_at: Timestamp,
+
+  content: MessageContent,
+
+  sender_service_id: t.string
+});
+
+// optional attributes
+const CreatedMessageWithContentO = t.partial({
+  time_to_live: TimeToLiveSeconds
+});
+
+export const CreatedMessageWithContent = t.intersection(
+  [CreatedMessageWithContentR, CreatedMessageWithContentO],
+  "CreatedMessageWithContent"
+);
+
+export type CreatedMessageWithContent = t.TypeOf<
+  typeof CreatedMessageWithContent
+>;
+
 const createMessageWithContent = (
   fiscalCode: string,
   serviceId: string,
@@ -57,13 +87,15 @@ const createMessageWithContent = (
   dueDate?: Date,
   amount?: number
 ): CreatedMessageWithContent => {
-  const medicalPrescription: CreatedMessageWithContentMedical_prescription = {
+  const medicalPrescription: MessageContentPrescription_data = {
     nre: "050A00854698121",
     iup: "0000X0NFM",
-    prescriber_fiscal_code: "XXXXTT90A12L719R" as FiscalCode,
-    image_data: base64Image,
-    image_format: "jpeg"
+    prescriber_fiscal_code: "XXXXTT90A12L719R" as FiscalCode
   };
+  const attachments: ReadonlyArray<MessageAttachment> = [
+    { name: "attachment1", base64_content: base64Image, mime_type: "png" },
+    { name: "attachment2", base64_content: base64Image2, mime_type: "png" }
+  ];
   const msgId = messageId || getRandomStringId(26);
   const date = dueDate;
   const paymentData =
@@ -74,20 +106,22 @@ const createMessageWithContent = (
           invalid_after_due_date: invalidAfterDueDate
         }
       : undefined;
-  return {
-    content: {
-      subject: `subject [${serviceId}]` as MessageSubject,
-      markdown: "test test test test test test test test test test test test test test test test test test test test test test test test test test" as MessageBodyMarkdown,
-      due_date: date,
-      payment_data: paymentData as PaymentData
-    },
+  const messageContent: MessageContent = {
+    subject: `subject [${serviceId}]` as MessageSubject,
+    markdown: "test test test test test test test test test test test test test test test test test test test test test test test test test test" as MessageBodyMarkdown,
+    due_date: date,
+    payment_data: paymentData as PaymentData,
+    prescription_data: medicalPrescription,
+    attachments
+  };
+  return validatePayload(CreatedMessageWithContent, {
+    content: messageContent,
     created_at: date || new Date(),
     fiscal_code: fiscalCode as FiscalCode,
     id: msgId,
     sender_service_id: serviceId,
-    time_to_live: 3600 as TimeToLiveSeconds,
-    medical_prescription: medicalPrescription
-  };
+    time_to_live: 3600 as TimeToLiveSeconds
+  });
 };
 
 /**
@@ -123,68 +157,6 @@ export const getMessage = (
   };
 };
 
-/**
- * Do not edit this file it is auto-generated by italia-utils / gen-api-models.
- * See https://github.com/teamdigitale/italia-utils
- */
-/* tslint:disable */
-
-// required attributes
-const CreatedMessageWithContentMedical_prescriptionR = t.interface({
-  nre: t.string
-});
-
-// optional attributes
-const CreatedMessageWithContentMedical_prescriptionO = t.partial({
-  iup: t.string,
-
-  prescriber_fiscal_code: FiscalCode,
-
-  image_format: t.string,
-
-  image_data: t.string
-});
-
-export const CreatedMessageWithContentMedical_prescription = t.intersection(
-  [
-    CreatedMessageWithContentMedical_prescriptionR,
-    CreatedMessageWithContentMedical_prescriptionO
-  ],
-  "CreatedMessageWithContentMedical_prescription"
-);
-
-export type CreatedMessageWithContentMedical_prescription = t.TypeOf<
-  typeof CreatedMessageWithContentMedical_prescription
->;
-
-// required attributes
-const CreatedMessageWithContentR = t.interface({
-  id: t.string,
-
-  fiscal_code: FiscalCode,
-
-  created_at: Timestamp,
-
-  content: MessageContent,
-
-  sender_service_id: t.string
-});
-
-// optional attributes
-const CreatedMessageWithContentO = t.partial({
-  time_to_live: TimeToLiveSeconds,
-
-  medical_prescription: CreatedMessageWithContentMedical_prescription
-});
-
-export const CreatedMessageWithContent = t.intersection(
-  [CreatedMessageWithContentR, CreatedMessageWithContentO],
-  "CreatedMessageWithContent"
-);
-
-export type CreatedMessageWithContent = t.TypeOf<
-  typeof CreatedMessageWithContent
->;
 /**
  * return a message with content
  * @param messageId the id of the message to be created

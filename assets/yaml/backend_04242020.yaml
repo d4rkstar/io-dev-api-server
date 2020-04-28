@@ -23,7 +23,7 @@ paths:
       summary: Get Service
       description: A previously created service with the provided service ID is returned.
       responses:
-        '200':
+        "200":
           description: Service found.
           schema:
             "$ref": "#/definitions/ServicePublic"
@@ -59,7 +59,7 @@ paths:
     get:
       operationId: getVisibleServices
       summary: Get all visible services
-      description:  |-
+      description: |-
         Returns the description of all visible services.
       responses:
         "200":
@@ -155,15 +155,18 @@ paths:
             $ref: "#/definitions/CreatedMessageWithContent"
           examples:
             application/json: |
-              content: {
-                markdown: "hey hey !! <a style=\"color: red\" href=\"http://example.com\"> some content here ..... this is a link with a style applied, some other content</a>",
-                subject: "my subject ............"
+              message: {
+                content: {
+                  markdown: "hey hey !! <a style=\"color: red\" href=\"http://example.com\"> some content here ..... this is a link with a style applied, some other content</a>",
+                  subject: "my subject ............"
+                },
+                created_at: "2018-06-06T12:22:24.523Z",
+                fiscal_code: "LSSLCU79B24L219P",
+                id: "01CFAGRMGB9XCA8B2CQ4QA7K76",
+                sender_service_id: "5a25abf4fcc89605c082f042c49a",
+                time_to_live: 3600
               },
-              created_at: "2018-06-06T12:22:24.523Z",
-              fiscal_code: "LSSLCU79B24L219P",
-              id: "01CFAGRMGB9XCA8B2CQ4QA7K76",
-              sender_service_id: "5a25abf4fcc89605c082f042c49a",
-              time_to_live: 3600
+              attachments: [{name:"attachment", base64_content:"aBase64Encoding", mime_type: "image/png"}]
         "400":
           description: Bad request
           schema:
@@ -233,12 +236,12 @@ paths:
           x-examples:
             application/json:
               email: foobar@example.com
-              preferred_languages: [ it_IT ]
+              preferred_languages: [it_IT]
               is_inbox_enabled: true
               is_webhook_enabled: false
               version: 1
       responses:
-        '200':
+        "200":
           description: Profile updated.
           schema:
             $ref: "#/definitions/InitializedProfile"
@@ -299,9 +302,9 @@ paths:
               version: 1
               sender_allowed: true
         "400":
-            description: Bad request
-            schema:
-              $ref: "#/definitions/ProblemJson"
+          description: Bad request
+          schema:
+            $ref: "#/definitions/ProblemJson"
         "401":
           description: Bearer token null or expired.
         "404":
@@ -364,9 +367,9 @@ paths:
               spid_email: "preferred@example.com"
               spid_mobile_phone: "1234567890"
         "400":
-            description: Bad request
-            schema:
-              $ref: "#/definitions/ProblemJson"
+          description: Bad request
+          schema:
+            $ref: "#/definitions/ProblemJson"
         "401":
           description: Bearer token null or expired.
         "500":
@@ -403,7 +406,7 @@ paths:
             $ref: "#/definitions/UserMetadata"
           required: true
       responses:
-        '200':
+        "200":
           description: User Metadata updated.
           schema:
             $ref: "#/definitions/UserMetadata"
@@ -594,7 +597,7 @@ paths:
       summary: Get Activation status
       description: Check the activation status to retrieve the paymentId
       responses:
-        '200':
+        "200":
           description: Payment information
           schema:
             $ref: "#/definitions/PaymentActivationsGetResponse"
@@ -629,7 +632,7 @@ paths:
             $ref: "#/definitions/UserDataProcessingChoiceRequest"
           required: true
       responses:
-        '200':
+        "200":
           description: User Data processing created / updated.
           schema:
             $ref: "#/definitions/UserDataProcessing"
@@ -653,7 +656,7 @@ paths:
     x-swagger-router-controller: UserDataProcessingController
     get:
       operationId: getUserDataProcessing
-      summary: Get User's data processing 
+      summary: Get User's data processing
       description: Get the user's request to delete or download his stored data by providing a kind of choice.
       parameters:
         - $ref: "#/parameters/UserDataProcessingChoiceParam"
@@ -758,7 +761,9 @@ definitions:
     $ref: "http://127.0.0.1:3000/definitions.yaml#/UserDataProcessing"
   MessageResponseWithContent:
     $ref: "http://127.0.0.1:3000/definitions.yaml#/MessageResponseWithContent"
-  
+  MessageAttachment:
+    $ref: "http://127.0.0.1:3000/definitions.yaml#/MessageAttachment"
+
   # Definitions from pagopa-proxy
   PaymentProblemJson:
     $ref: "https://raw.githubusercontent.com/pagopa/io-pagopa-proxy/v0.8.6/api_pagopa.yaml#/definitions/PaymentProblemJson"
@@ -786,15 +791,16 @@ definitions:
     $ref: "https://raw.githubusercontent.com/pagopa/io-pagopa-proxy/v0.8.6/api_pagopa.yaml#/definitions/SpezzoniCausaleVersamento"
   SpezzoniCausaleVersamentoItem:
     $ref: "https://raw.githubusercontent.com/pagopa/io-pagopa-proxy/v0.8.6/api_pagopa.yaml#/definitions/SpezzoniCausaleVersamentoItem"
+
   Installation:
     type: object
     title: Installation
     description: Describes an app installation.
     properties:
       platform:
-        $ref: '#/definitions/Platform'
+        $ref: "#/definitions/Platform"
       pushChannel:
-        $ref: '#/definitions/PushChannel'
+        $ref: "#/definitions/PushChannel"
     required:
       - platform
       - pushChannel
@@ -806,7 +812,7 @@ definitions:
       accepted_tos_version:
         $ref: "#/definitions/AcceptedTosVersion"
       email:
-        $ref: '#/definitions/EmailAddress'
+        $ref: "#/definitions/EmailAddress"
       blocked_inbox_or_channels:
         $ref: "#/definitions/BlockedInboxOrChannels"
       preferred_languages:
@@ -822,13 +828,13 @@ definitions:
       family_name:
         type: string
       fiscal_code:
-        $ref: '#/definitions/FiscalCode'
+        $ref: "#/definitions/FiscalCode"
       has_profile:
         $ref: "#/definitions/HasProfile"
       name:
         type: string
       spid_email:
-        $ref: '#/definitions/EmailAddress'
+        $ref: "#/definitions/EmailAddress"
       spid_mobile_phone:
         type: string
         minLength: 1
@@ -836,7 +842,7 @@ definitions:
         type: string
         format: date
       version:
-        $ref: '#/definitions/Version'
+        $ref: "#/definitions/Version"
     required:
       - family_name
       - fiscal_code
@@ -863,7 +869,7 @@ definitions:
     description: Describe the current session of an authenticated user.
     properties:
       spidLevel:
-         $ref: '#/definitions/SpidLevel'
+        $ref: "#/definitions/SpidLevel"
       walletToken:
         type: string
     required:
@@ -875,7 +881,7 @@ definitions:
     description: Decribe a session of an authenticated user.
     properties:
       createdAt:
-        $ref: '#/definitions/Timestamp'
+        $ref: "#/definitions/Timestamp"
       sessionToken:
         type: string
     required:
@@ -888,7 +894,7 @@ definitions:
       sessions:
         type: array
         items:
-          $ref: '#/definitions/SessionInfo'
+          $ref: "#/definitions/SessionInfo"
     required:
       - sessions
   InstallationID:
@@ -906,7 +912,7 @@ definitions:
   IsEmailSet:
     type: boolean
     default: false
-    description:  True if the user has presonalized the email.
+    description: True if the user has presonalized the email.
   Version:
     type: integer
     description: The entity version.
@@ -940,11 +946,11 @@ definitions:
       family_name:
         type: string
       fiscal_code:
-        $ref: '#/definitions/FiscalCode'
+        $ref: "#/definitions/FiscalCode"
       name:
         type: string
       spid_email:
-        $ref: '#/definitions/EmailAddress'
+        $ref: "#/definitions/EmailAddress"
       spid_mobile_phone:
         type: string
         minLength: 1
@@ -962,7 +968,7 @@ definitions:
       family_name:
         type: string
       fiscal_code:
-        $ref: '#/definitions/FiscalCode'
+        $ref: "#/definitions/FiscalCode"
       name:
         type: string
       date_of_birth:
