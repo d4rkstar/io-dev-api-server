@@ -12,7 +12,7 @@ import { Timestamp } from "../../generated/definitions/backend/Timestamp";
 import { TimeToLiveSeconds } from "../../generated/definitions/backend/TimeToLiveSeconds";
 import { getRandomIntInRange, getRandomStringId } from "../../src/utils/id";
 import { validatePayload } from "../../src/utils/validator";
-import { base64png, base64png, base64svg } from "./imagebase64";
+import { base64png, base64svg } from "./imagebase64";
 import {
   MessageAttachment,
   MessageContent,
