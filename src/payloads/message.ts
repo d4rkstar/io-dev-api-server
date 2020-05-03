@@ -12,7 +12,7 @@ import { Timestamp } from "../../generated/definitions/backend/Timestamp";
 import { TimeToLiveSeconds } from "../../generated/definitions/backend/TimeToLiveSeconds";
 import { getRandomIntInRange, getRandomStringId } from "../../src/utils/id";
 import { validatePayload } from "../../src/utils/validator";
-import { base64Image, base64Image2 } from "./imagebase64";
+import { base64png, base64png, base64svg } from "./imagebase64";
 import {
   MessageAttachment,
   MessageContent,
@@ -93,8 +93,12 @@ const createMessageWithContent = (
     prescriber_fiscal_code: "XXXXTT90A12L719R" as FiscalCode
   };
   const attachments: ReadonlyArray<MessageAttachment> = [
-    { name: "attachment1", base64_content: base64Image, mime_type: "png" },
-    { name: "attachment2", base64_content: base64Image2, mime_type: "png" }
+    { name: "attachment1", base64_content: base64png, mime_type: "image/png" },
+    {
+      name: "attachment2",
+      base64_content: base64svg,
+      mime_type: "image/svg+xml"
+    }
   ];
   const msgId = messageId || getRandomStringId(26);
   const date = dueDate;
