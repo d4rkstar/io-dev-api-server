@@ -26,7 +26,7 @@ import { Timestamp } from "../../generated/definitions/backend/Timestamp";
 const MessageAttachmentR = t.interface({
   name: t.string,
 
-  base64_content: t.string,
+  content: t.string,
 
   mime_type: t.string
 });

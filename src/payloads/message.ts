@@ -93,10 +93,10 @@ const createMessageWithContent = (
     prescriber_fiscal_code: "XXXXTT90A12L719R" as FiscalCode
   };
   const attachments: ReadonlyArray<MessageAttachment> = [
-    { name: "attachment1", base64_content: base64png, mime_type: "image/png" },
+    { name: "attachment1", content: base64png, mime_type: "image/png" },
     {
       name: "attachment2",
-      base64_content: base64svg,
+      content: base64svg,
       mime_type: "image/svg+xml"
     }
   ];
