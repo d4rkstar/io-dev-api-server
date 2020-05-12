@@ -254,6 +254,10 @@ app.post("/wallet/v1/wallet/:id_card/actions/favourite", (req, res) => {
 });
 
 app.get("/wallet/checkout", (_, res) => {
+  res.send(
+    "<br><br><br><br><div><h1>I am an expected error</h1></div><div>We should provide the standard topheaher with the back button, so the user can go back</div>"
+  );
+  return;
   // In query string we have
   // id = NzA5MDA0ODM0Ng==
   // sessionToken = 3m3Q2h6e8T5w9t3W8b8y1F4t2m6Q9b8d9N6h1f2H2u0g6E7m9d9E3g7w3T3b5a7I4c4h6U4n2b3Z4p3j8D6p4a5G1c4a8K3o0v8P7e0j6R5i1y2J6d0c7N9i6m0U3j9z
@@ -308,7 +312,7 @@ app.get(`/wallet/v1/psps`, (req, res) => {
   // wallet with id 2222 is the favourite one
   // for create tests case with result 400
   res.json(pspList);
-  
+
   /* For testing 400 response, instead:
   if (
     req.query.paymentType === "CREDIT_CARD" &&
