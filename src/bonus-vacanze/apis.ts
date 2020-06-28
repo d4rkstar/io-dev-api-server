@@ -96,6 +96,7 @@ bonusVacanze.get(`/activations/:bonus_id`, (req, res) => {
 // and retry to activate the bonus within 24h since her got the result.
 bonusVacanze.post(`/activations`, (_, res) => {
   // if there is no previous activation -> Request created -> send back the created id
+
   fromNullable(idActivationBonus).foldL(
     () => {
       idActivationBonus = activeBonus.id;

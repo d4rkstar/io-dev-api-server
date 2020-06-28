@@ -43,8 +43,8 @@ export const withDueDate = (
 
 export const withPaymentData = (
   message: CreatedMessageWithContent,
-  noticeNumber: string = "012345678912345678",
   amount: number = getRandomIntInRange(1, 10000),
+  noticeNumber: string = "012345678912345678",
   invalidAfterDueDate: boolean = false
 ): CreatedMessageWithContent => {
   const data: PaymentData = {

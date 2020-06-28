@@ -45,7 +45,7 @@ export const getWallets = (): WalletListResponse => {
     serviceName: "nomeServizio 10 white",
     fixedCost: validAmount,
     appChannel: false,
-    tags: ["MAESTRO"],
+    tags: ["MASTERCARD"],
     serviceDescription: "DESCRIZIONE servizio: CP mod1",
     serviceAvailability: "DISPONIBILITA servizio 24/7",
     paymentModel: 1,
@@ -88,19 +88,19 @@ export const getWallets = (): WalletListResponse => {
   };
 
   const data = {
-    data: [WalletBank, WalletCard, WalletBank2]
+    data: [WalletBank]
   };
 
   return validatePayload(WalletListResponse, data);
 };
 
 export const getTransactions = (count: number): ReadonlyArray<Transaction> => {
-  return range(1, count).map(idx => {
+  return range(1, 1).map(idx => {
     return validatePayload(Transaction, {
       accountingStatus: 1,
-      amount: { amount: 20000 },
-      created: new Date(2018, 10, 30, 13, 12, 22, 30),
-      description: `hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world hello world`,
+      amount: { amount: 150.5 * 100 },
+      created: new Date(2020, 0, 1, 13, 12, 22, 30),
+      description: "Pagamento Bollo auto",
       error: false,
       fee: { amount: 1 },
       grandTotal: { amount: 32100 },
@@ -109,7 +109,7 @@ export const getTransactions = (count: number): ReadonlyArray<Transaction> => {
       idPsp: 43188,
       idStatus: 3,
       idWallet: 12345,
-      merchant: "merchant",
+      merchant: "ACI",
       nodoIdPayment: "nodoIdPayment",
       paymentModel: 5,
       spcNodeDescription: "spcNodeDescription",

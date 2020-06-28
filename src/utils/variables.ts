@@ -20,17 +20,17 @@ Attenzione:il calcolo effettuato con la simulazione non ha valore certificativo 
 export const frontMatter2CTA2 = `---
 it:
     cta_1: 
-        text: "email"
+        text: "email IT"
         action: "iohandledlink://email:test@test.it"
     cta_2: 
-        text: "pagamenti"
+        text: "pagamenti IT"
         action: "ioit://WALLET_HOME"
 en:
     cta_1: 
-        text: "email"
+        text: "email EN"
         action: "iohandledlink://email:test@test.it"
     cta_2: 
-        text: "payments"
+        text: "payments EN"
         action: "ioit://WALLET_HOME"
 ---`;
 

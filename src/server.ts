@@ -74,11 +74,11 @@ const responseHandler = new ResponseHandler(app);
 // tslint:disable-next-line: no-let
 let currentProfile = getProfile(fiscalCode).payload;
 // services and messages
-export const services = getServices(20);
-const totalMessages = 5;
+export const services = getServices(2);
+const totalMessages = 2;
 export const messages = getMessages(totalMessages, services, fiscalCode);
 const now = new Date();
-const hourAhead = new Date(now.getTime() + 60 * 1000 * 60);
+const hourAhead = new Date(now.getTime() + 60 * 1000 * 60 * 24 * 16);
 export const servicesTuple = getServicesTuple(services);
 export const servicesByScope = getServicesByScope(services);
 const messageContents: ReadonlyArray<string> = [
@@ -88,19 +88,28 @@ const messageContents: ReadonlyArray<string> = [
   frontMatterInvalid,
   frontMatter2CTA2
 ];
+const subs = ["Benvenuto in IO", "Scadenza Carta di Identità"];
+let pym: boolean | undefined = undefined;
 export const messagesWithContent = messages.payload.items.map((item, idx) => {
   const withContent = withMessageContent(
     item,
-    `Subject - test ${idx + 1}`,
-    messageContents[idx % messageContents.length] + messageMarkdown // add front matter prefix
+    subs[idx % subs.length],
+    messageMarkdown // add front matter prefix
   );
-  const withDD = withDueDate(withContent, hourAhead);
-  return withPaymentData(withDD);
+
+  if (pym) {
+    pym = false;
+    return withDueDate(withContent, hourAhead);
+  }
+  if (pym === undefined) {
+    pym = true;
+  }
+  return withContent;
 });
 // wallets and transactions
 export const wallets = getWallets();
 export const transactionPageSize = 10;
-export const transactionsTotal = 25;
+export const transactionsTotal = 1;
 export const transactions = getTransactions(transactionsTotal);
 
 // change this directory to serve differents files
