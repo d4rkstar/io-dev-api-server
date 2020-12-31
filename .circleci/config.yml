@@ -1,7 +1,32 @@
-version: 2.1
-orbs:
-  node: circleci/node@3.0.0
+---
+version: 2
+jobs:
+  node-12: &test
+    docker:
+      - image: node:12
+    working_directory: ~/src
+    steps:
+      - checkout
+      - restore_cache: &restore_cache
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Install dependencies
+          command: yarn install
+      - save_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Run linter
+          command: yarn tslint --config tslint.json -p tsconfig.json
+      - run:
+          name: Testing
+          command: yarn test
+      - run: "bash <(curl -s https://codecov.io/bash)"
+
 workflows:
-  node-tests:
+  version: 2
+  "io-dev-api-server":
     jobs:
-      - node/test
+      - node-12
